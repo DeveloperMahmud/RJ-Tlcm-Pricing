@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Secret Code Price Finder - RJ Telecom</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #ffffff;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 3rem; /* space for developer footer */
+    }
+
+    .glass {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+
+    .neon-text {
+      text-shadow: 0 0 5px #00ffe7, 0 0 10px #00ffe7, 0 0 20px #00ffe7;
+    }
+
+    .glow-border {
+      border: 2px solid transparent;
+      border-image: linear-gradient(45deg, #00ffe7, #8a2be2) 1;
+    }
+
+    /* Floating SVG Icons */
+    .float-item {
+      position: absolute;
+      opacity: 0.1;
+      fill: #00ffe7;
+      width: 64px;
+      height: 64px;
+      z-index: 0;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .float-slow {
+      animation-duration: 6s;
+    }
+
+    .float-fast {
+      animation-duration: 3s;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    /* Developer footer */
+    #developer-footer {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      padding: 0.25rem 1rem;
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 0.85rem;
+      color: #aaa;
+      text-align: center;
+      z-index: 20;
+      user-select: none;
+    }
+
+    #developer-footer a {
+      color: #00ffe7;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    #developer-footer a:hover,
+    #developer-footer a:focus {
+      color: #8a2be2;
+      outline: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center px-4 relative">
+
+  <!-- Shop Name -->
+  <header class="mb-8 text-center z-10 relative">
+    <h1 class="text-4xl font-extrabold neon-text select-none">RJ TELECOM</h1>
+  </header>
+
+  <!-- 🌌 Floating Background Icons -->
+  <svg class="float-item float-fast" style="top: 20%; left: 10%;" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d="M2 2l2 2 4-2 2 2-4 4-2-2-2 4 2 2-2 2 2 2 2-2 2 2 4-4-2-2 2-2-2-2-2 2-2-2 4-4-2-2-4 2-2-2z" fill="currentColor"/>
+  </svg>
+
+  <svg class="float-item float-slow" style="top: 50%; left: 80%;" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <rect x="6" y="6" width="12" height="12" rx="2" ry="2" stroke="currentColor" fill="none" stroke-width="2"/>
+    <path d="M9 9h6v6H9z" fill="currentColor"/>
+  </svg>
+
+  <svg class="float-item" style="top: 70%; left: 25%;" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <rect x="6" y="2" width="12" height="20" rx="2" ry="2" stroke="currentColor" fill="none" stroke-width="2"/>
+    <circle cx="12" cy="19" r="1" fill="currentColor"/>
+  </svg>
+
+  <svg class="float-item float-slow" style="top: 35%; left: 60%;" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d="M22 7l-5.5 5.5-2-2L20 5l2 2zm-7.5 5.5l-2 2L4 6l2-2 8.5 8.5zM3 20h6v2H3z" fill="currentColor"/>
+  </svg>
+
+  <svg class="float-item float-fast" style="top: 80%; left: 50%;" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <rect x="7" y="4" width="10" height="16" rx="2" ry="2" stroke="currentColor" fill="none" stroke-width="2"/>
+    <rect x="9" y="6" width="6" height="12" fill="currentColor"/>
+  </svg>
+
+  <!-- 💠 Main Card -->
+  <main class="glass p-8 rounded-xl max-w-md w-full text-center relative z-10">
+    <p class="mb-2 text-gray-400">Enter your code below.</p>
+    <input
+      id="codeInput"
+      type="text"
+      placeholder="e.g., MICE"
+      class="w-full px-4 py-3 rounded-md bg-black text-white placeholder-gray-500 glow-border focus:outline-none focus:ring-2 focus:ring-cyan-400 transition duration-200"
+      aria-label="Secret code input"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+    />
+
+    <button
+      onclick="convertCode()"
+      class="mt-4 w-full bg-cyan-500 hover:bg-cyan-400 text-white font-semibold py-2 px-4 rounded-md transition duration-300"
+      aria-label="Reveal price"
+    >
+      🔍 Reveal
+    </button>
+
+    <div id="result" class="mt-6 text-xl font-semibold" aria-live="polite" aria-atomic="true"></div>
+  </main>
+
+  <!-- Developer Footer -->
+  <footer id="developer-footer" role="contentinfo"><span>Inspiration from - <a href="https://developermahmud.github.io/Mahmud-Portfolio" target="_blank" rel="noopener noreferrer">Mahedi Hassan</a> </span>
+    Developed by <a href="https://developermahmud.github.io/Mahmud-Portfolio" target="_blank" rel="noopener noreferrer">Mahmudul Hassan</a>
+  </footer>
+
+  <!-- 🔧 Secret Code Script -->
+  <script>
+    const secretMap = {
+      'R': '1',
+      'J': '2',
+      'T': '3',
+      'E': '4',
+      'L': '5',
+      'I': '6',
+      'C': '7',
+      'O': '8',
+      'M': '9',
+      'e': '0'
+    };
+
+    function convertCode() {
+      const input = document.getElementById('codeInput').value.trim();
+      let result = '';
+      let isValid = true;
+
+      for (let char of input) {
+        if (secretMap[char]) {
+          result += secretMap[char];
+        } else {
+          isValid = false;
+          break;
+        }
+      }
+
+      const resultDiv = document.getElementById('result');
+      if (isValid && result !== '') {
+        resultDiv.innerHTML = `💰 <span class="text-cyan-400">Price: ${result}</span>`;
+      } else {
+        resultDiv.innerHTML = `<span class="text-red-500">❌ Invalid code. Use only allowed letters.</span>`;
+      }
+    }
+  </script>
+</body>
+</html>
